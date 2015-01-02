@@ -13,17 +13,20 @@ using WorldCup.Models;
 
 namespace WorldCup.Controllers
 {
+    [RoutePrefix("api/countries")]
     public class CountriesController : ApiController
-    {
+    {    
         private WorldCupContext db = new WorldCupContext();
 
-        // GET: api/Countries
+        // GET: api/countries
+        [Route("")]
         public IQueryable<Country> GetCountries()
         {
             return db.Countries;
         }
 
-        // GET: api/Countries/5
+        // GET: api/countries/{}
+        [Route("{id:int}")]
         [ResponseType(typeof(Country))]
         public async Task<IHttpActionResult> GetCountry(int id)
         {
@@ -51,7 +54,8 @@ namespace WorldCup.Controllers
             return CreatedAtRoute("DefaultApi", new { id = country.CountryId }, country);
         }
 
-        // DELETE: api/Countries/5
+        // DELETE: api/countries/{id}
+        [Route("{id}")]
         [ResponseType(typeof(Country))]
         public async Task<IHttpActionResult> DeleteCountry(int id)
         {
