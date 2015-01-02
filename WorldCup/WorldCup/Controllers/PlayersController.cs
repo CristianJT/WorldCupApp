@@ -39,6 +39,14 @@ namespace WorldCup.Controllers
             return Ok(player);
         }
 
+        // GET: api/countries/{id}/players
+        [Route("~/api/countries/{id}/players")]
+        public IQueryable<Player> GetPlayersByCountry(int id)
+        {
+            return db.Players.Include(p => p.Team)
+                .Where(p => p.CountryId == id);
+        }
+
         // POST: api/Players
         [ResponseType(typeof(Player))]
         public async Task<IHttpActionResult> PostPlayer(Player player)
