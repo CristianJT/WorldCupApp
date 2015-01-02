@@ -1,0 +1,23 @@
+﻿<div class="panel-body" ng-controller="PlayerController">
+    <table class="table">
+        <thead class="">
+            <tr>
+                <th ng-click="order = 'num'; reverse=!reverse"><a href="">Número</a></th>
+                <th ng-click="order = 'name'; reverse=!reverse"><a href="">Nombre</a></th>
+                <th ng-click="order = 'position'; reverse=!reverse"><a href="">Posición</a></th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="player in players | orderBy: order:reverse">
+            <tr>
+                <td>{{player.num}}</td>
+                <td><span>{{player.name}}</span></td>
+                <td>{{player.position}}</td>
+                <td><button type="button" class="btn btn-link" ng-click="deletePlayer(player.num)">Eliminar</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <button class="btn btn-primary pull-right" ng-click="linkToCreatePlayer(teamId)">Nuevo Jugador</button>
+    </div>
+</div>
+

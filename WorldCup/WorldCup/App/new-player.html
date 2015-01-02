@@ -1,0 +1,34 @@
+﻿<div class="container">
+    <div><h3 class="text-center"><strong>Selección de {{team.name}}</strong></h3></div>
+    <form name="NewPlayerForm" ng-submit=" NewPlayerForm.$valid && addPlayer(player)" novalidate>
+        <br />
+        <blockquote>
+            <div ng-show="player.num"><strong>Número:</strong> {{player.num}}</div>
+            <div ng-show="player.name"><strong>Nombre: {{player.name}}</strong></div>
+            <div ng-show="player.position"><strong>Posición:</strong> {{player.position}}</div>
+        </blockquote>
+
+        <h3 class="text-center">Nuevo Jugador</h3>
+        <br />
+        <fieldset class="form-group">
+            <select ng-model="player.num" required class="form-control" ng-options="n for n in getNums()">
+                <option value="">Seleccione Número</option>
+            </select>
+        </fieldset>
+        <fieldset class="form-group">
+            <input type="text" name="nombre" ng-model="player.name" required class="form-control" placeholder="Nombre" />
+        </fieldset>
+        <fieldset class="form-group">
+            <select ng-model="player.position" required class="form-control" ng-options="pos for pos in ['DEL','VOL','DEF','ARQ']">
+                <option value="">Seleccione Posición</option>
+            </select>
+        </fieldset>
+        <fieldset class="form-group">
+            <input type="submit" class="btn btn-primary pull-right" value="Aceptar" />
+        </fieldset>
+
+    </form>
+    <button class="btn btn-link" ng-click="backToPlayers(teamId)">>>Volver</button>
+    <button class="btn btn-link" ng-click="backToTeams()">>>Grupos</button>
+    <button class="btn btn-link" ng-click="reset()">>>Limpiar</button>
+</div>
