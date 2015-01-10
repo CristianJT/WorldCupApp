@@ -51,7 +51,7 @@ namespace WorldCup.Controllers
             db.Countries.Add(country);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = country.CountryId }, country);
+            return CreatedAtRoute("DefaultApi", new { id = country.countryId }, country);
         }
 
         // DELETE: api/countries/{id}
@@ -82,7 +82,7 @@ namespace WorldCup.Controllers
 
         private bool CountryExists(int id)
         {
-            return db.Countries.Count(e => e.CountryId == id) > 0;
+            return db.Countries.Count(e => e.countryId == id) > 0;
         }
     }
 }

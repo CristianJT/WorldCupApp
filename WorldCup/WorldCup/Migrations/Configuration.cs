@@ -16,12 +16,14 @@ namespace WorldCup.Migrations
         protected override void Seed(WorldCup.Models.WorldCupContext context)
         {
             context.Countries.AddOrUpdate(new Country[] {
-                new Country { CountryId = 1, Name = "Alemania", Group = "G", Seed = 1, Cups = 4 },
-                new Country { CountryId = 2, Name = "Argentina", Group = "F", Seed = 1, Cups = 2 },
-                new Country { CountryId = 3, Name = "Holanda", Group = "B", Seed = 2, Cups = 0 },
-                new Country { CountryId = 4, Name = "Brasil", Group = "A", Seed = 1, Cups = 5 },
-                new Country { CountryId = 5, Name = "Francia", Group = "E", Seed = 3, Cups = 1 },
-                new Country { CountryId = 6, Name = "Colombia", Group = "C", Seed = 1, Cups = 0 }
+                new Country { countryId = 1, name = "Alemania", group = "G", seed = 1, cups = 4 },
+                new Country { countryId = 2, name = "Argentina", group = "F", seed = 1, cups = 2 },
+                new Country { countryId = 3, name = "Holanda", group = "B", seed = 2, cups = 0 },
+                new Country { countryId = 4, name = "Brasil", group = "A", seed = 1, cups = 5 },
+                new Country { countryId = 5, name = "Francia", group = "E", seed = 3, cups = 1 },
+                new Country { countryId = 6, name = "Colombia", group = "C", seed = 1, cups = 0 },
+                new Country { countryId = 7, name = "Camerun", group = "A", seed = 4, cups = 0 },
+                new Country { countryId = 8, name = "Croacia", group = "A", seed = 2, cups = 0 }
             });
 
             context.Players.AddOrUpdate(new Player[] {

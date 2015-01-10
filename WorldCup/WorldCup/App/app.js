@@ -5,15 +5,23 @@
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider.
             when('/teams', {
-                templateUrl: '/App/teamsPage.html',
+                templateUrl: '/App/worldCupPage.html',
                 controller: 'WorldCupController'
             }).
-            when('/teams/:teamId', {
-                templateUrl: '/App/app-panel.html',
+            when('/teams/:id', {
+                templateUrl: '/App/teamsPage.html',
                 controller: 'TeamController'
             }).
-            when('/teams/:teamId/newplayer', {
-                templateUrl: '/App/new-player.html',
+            when('/teams/:id/players', {
+                templateUrl: '/App/playersPage.html',
+                controller: 'PlayerController'
+            }).
+            when('/teams/:id/groups', {
+                templateUrl: '/App/groupsPage.html',
+                controller: 'GroupController'
+            }).
+            when('/teams/:id/players/newplayer', {
+                templateUrl: '/App/newPlayerPage.html',
                 controller: 'CreatePlayerController'
             }).
             otherwise({
@@ -115,18 +123,16 @@
         
     });
 
-    function order(a, b) {                                          //Permite ordenar el array por el atributo seed
-        if (a.seed < b.seed)
-            return -1;
-        if (a.seed > b.seed)
-            return 1;
-    }
-    
     app.controller('WorldCupController', ['$scope', 'appData', function ($scope, appData) {
-       
-        teams = appData.getCountries();                             //Obtengo todos los paises
 
-        $scope.countries = teams.sort(order);                       //countries = array de paises ordenado por seed
+        function order(a, b) {                                          //Permite ordenar el array por el atributo seed
+            if (a.seed < b.seed)
+                return -1;
+            if (a.seed > b.seed)
+                return 1;
+        }
+
+        $scope.countries = appData.getCountries().sort(order);
 
         $scope.getGroups = function () {                            //permite obtener todos los grupos
             var grupos = [];
@@ -142,7 +148,7 @@
 
     app.controller('TeamController', ['$scope', '$routeParams', '$location', 'appData', function ($scope, $routeParams, $location, appData) {
 
-        $scope.team = appData.countryById($routeParams.teamId);
+        $scope.team = appData.countryById($routeParams.id);
 
         $scope.tab = 1;
         $scope.selectedTab = function (newTab) {
@@ -150,6 +156,10 @@
         };
         $scope.selected = function (checkedTab) {
             return $scope.tab === checkedTab;
+        };
+
+        $scope.linkToPlayer = function () {
+            $location.path('/teams/'+ $routeParams.id + '/players')
         };
 
         $scope.backToTeams = function () {
@@ -160,8 +170,7 @@
 
     app.controller('PlayerController', ['$scope', '$location', '$routeParams', 'appData', function ($scope, $location, $routeParams, appData) {
 
-        $scope.players = appData.countryById($routeParams.teamId).players;
-        $scope.teamId = $routeParams.teamId;
+        $scope.players = appData.countryById($routeParams.id).players;
 
         $scope.order = 'num';
         $scope.reverse = false;
@@ -174,23 +183,24 @@
             }
         };
 
-        $scope.linkToCreatePlayer = function (teamId) {
-            $location.path('/teams/' + teamId + '/newplayer');
+        $scope.linkToCreatePlayer = function () {
+            $location.path('/teams/' + $routeParams.id + '/players/newplayer');
         };
     }]);
 
     app.controller('GroupController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
-
+        $scope.team = appData.countryById($routeParams.id);
         $scope.countries = appData.getCountries();        
-        $scope.teamsByGroup = function (aGroup) {
-            var teamsByGroup = [];
-            $scope.countries.forEach(function (item) {
-                if (item.group == aGroup) {
-                    teamsByGroup.push(item);
-                }
-            });
-            return teamsByGroup.sort(order);
-        };
+
+        //$scope.teamsByGroup = function (aGroup) {
+        //    var teamsByGroup = [];
+        //    $scope.countries.forEach(function (item) {
+        //        if (item.group == aGroup) {
+        //            teamsByGroup.push(item);
+        //        }
+        //    });
+        //    return teamsByGroup.sort(order);
+        //};
 
         $scope.matches = appData.getMatches();
         $scope.getMatches = function (aTeam) {
@@ -242,48 +252,36 @@
     }]);
 
     app.controller('CreatePlayerController', ['$scope', '$location', '$routeParams', 'appData', function ($scope, $location, $routeParams, appData) {
+                                     
+        $scope.team = appData.countryById($routeParams.id);                 
 
-        $scope.teamId = $routeParams.teamId;                                        //temaId = id de la ruta
-        $scope.team = appData.countryById($routeParams.teamId);                 //team = un pais con id (teamId)
-        $scope.players = appData.countryById($routeParams.teamId).players;      //players = jugadores de idb(teamId)
-
-        $scope.getNums = function () {                                              //Permite obtener los numeros de los jugadores
+        $scope.getNums = function () {                                             
             var numeros = [];
             for (i = 1; i <= 23; i++) {
-                numeros.push(i);                                                    //numeros = array de enteros del 1 al 23
+                numeros.push(i);                                                    
             }
-            angular.forEach($scope.players, function (player) {                     //elimino del array "numeros" los ya utilizados
+            angular.forEach($scope.team.players, function (player) {                     
                 var index;
                 index = numeros.indexOf(player.num);
                 numeros.splice(index, 1);
             });
             return numeros;
         }
-
-        $scope.addPlayer = function (aPlayer) {                                     //agregar un nuevo jugador
+        $scope.addPlayer = function (aPlayer) {                                     
             $scope.team.players.push(aPlayer);
-            $scope.backToPlayers($scope.team.id);
+            $scope.backToPlayers();
         };
 
-        $scope.backToPlayers = function (teamId) {                                  //volver a la lista de jugadores
-            $location.path('/teams/' + teamId);
+        $scope.backToPlayers = function () {                                  
+            $location.path('/teams/' + $routeParams.id + '/players');
         };
-
-        $scope.backToTeams = function () {                                          //volver a los grupos de selecciones
+        $scope.backToTeams = function () {                                          
             $location.path('/teams');
         };
-
-        $scope.reset = function () {                                                //permite resetear el objeto "player", utilizado en el formulario
+        $scope.reset = function () {                                               
             $scope.player = {};
         };
     }]);
-
-    app.directive('countryPlayers', function () {
-        return {
-            restrict: 'E',
-            templateUrl: 'playersPage.html'
-        };
-    });
 
     app.directive('countryGroup', [function () {
         return {

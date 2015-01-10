@@ -7,10 +7,10 @@ namespace WorldCup.Models
 {
     public class Country
     {
-        public int CountryId { get; set; }
-        public string Name { get; set; }
-        public string Group { get; set; }
-        public int Seed { get; set; }
-        public int Cups { get; set; }
+        public int countryId { get; set; }
+        public string name { get; set; }
+        public string group { get; set; }
+        public int seed { get; set; }
+        public int cups { get; set; }
     }
 }

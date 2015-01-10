@@ -81,14 +81,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\app-panel.html" />
-    <Content Include="App\app.js" />
-    <Content Include="App\countries.html" />
-    <Content Include="App\index.html" />
-    <Content Include="App\new-player.html" />
-    <Content Include="App\playersPage.html" />
-    <Content Include="App\teamGroupPage.html" />
     <Content Include="App\teamsPage.html" />
+    <Content Include="App\app.js" />
+    <Content Include="App\index.html" />
+    <Content Include="App\newPlayerPage.html" />
+    <Content Include="App\playersPage.html" />
+    <Content Include="App\groupsPage.html" />
+    <Content Include="App\worldCupPage.html" />
     <Content Include="CSS\bootstrap.css" />
     <Content Include="CSS\bootstrap.min.css" />
     <Content Include="Global.asax" />
@@ -112,6 +111,10 @@
     <Compile Include="Migrations\201501022259006_Initial.Designer.cs">
       <DependentUpon>201501022259006_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501092204505_second.cs" />
+    <Compile Include="Migrations\201501092204505_second.Designer.cs">
+      <DependentUpon>201501092204505_second.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Player.cs" />
@@ -133,6 +136,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201501022259006_Initial.resx">
       <DependentUpon>201501022259006_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501092204505_second.resx">
+      <DependentUpon>201501092204505_second.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

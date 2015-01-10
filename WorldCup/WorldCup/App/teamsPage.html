@@ -1,12 +1,30 @@
-﻿<div class="col-md-3" ng-repeat="g in getGroups()">
-    <div class="panel panel-default">
-        <div class=" panel-heading">
-            <h3 class="text-center">Grupo {{g | uppercase}}</h3>
-        </div>
-        <div class="panel-body" ng-repeat="team in countries | orderBy: order | filter: {group: g}" >
-            <div class="list-group-item">
-                <a href="#/teams/{{team.id}}"><h4 class="text-center">{{team.name}}</h4></a>
-            </div>
-        </div>
+﻿<section class="container">
+    <div><h3 class="text-center"><strong>Selección de {{team.name}}</strong></h3></div>
+    <br />
+    <ul class="nav nav-pills">
+        <li ng-class="{ active: selected(1) }">
+            <a href="#/teams/{{team.id}}/players" ng-click="selectedTab(1)"><h4>Plantel</h4></a>
+        </li>
+        <li ng-class="{ active: selected(2) }">
+            <a href="#/teams/{{team.id}}/groups" ng-click="selectedTab(2)"><h4>Grupo</h4></a>
+        </li>
+        <li ng-class="{ active: selected(3) }">
+            <a href="" ng-click="selectedTab(3)"><h4>Detalles</h4></a>
+        </li> 
+    </ul>
+
+    <div ng-show="selected(1)">
     </div>
-</div>
+
+    <div ng-show="selected(2)">
+        <country-group></country-group>
+    </div>
+
+    <div ng-show="selected(3)">
+        <br />
+        <h4>Mundiales: {{team.cups}}</h4>
+    </div>
+    <div>
+        <button class="btn btn-link" ng-click="backToTeams()">>>Volver</button>
+    </div>
+</section>

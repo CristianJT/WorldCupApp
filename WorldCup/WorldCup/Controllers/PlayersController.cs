@@ -57,7 +57,8 @@ namespace WorldCup.Controllers
                 .Select(AsPlayerDto);
         }
 
-        // POST: api/Players
+        // POST: api/players
+        [Route("",Name="Create")]
         [ResponseType(typeof(Player))]
         public async Task<IHttpActionResult> PostPlayer(Player player)
         {
@@ -69,7 +70,16 @@ namespace WorldCup.Controllers
             db.Players.Add(player);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = player.PlayerId }, player);
+            db.Entry(player).Reference(p => p.Team).Load();
+
+            var dto = new PlayerDTO()
+            {
+                Name = player.Name,
+                Position = player.Position,
+                Number = player.Number,
+            };
+
+            return CreatedAtRoute<PlayerDTO>("Create", null, dto);
         }
 
         // DELETE: api/players/{id}
