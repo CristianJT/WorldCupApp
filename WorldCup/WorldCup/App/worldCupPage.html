@@ -3,7 +3,7 @@
         <div class=" panel-heading">
             <h3 class="text-center">Grupo {{g | uppercase}}</h3>
         </div>
-        <div class="panel-body" ng-repeat="team in countries | orderBy: order | filter: {group: g}" >
+        <div class="panel-body" ng-repeat="team in countries | filter: {group: g}" >
             <div class="list-group-item">
                 <a href="#/teams/{{team.id}}"><h4 class="text-center">{{team.name}}-{{team.seed}}</h4></a>
             </div>
