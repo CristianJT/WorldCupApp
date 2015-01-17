@@ -20,6 +20,10 @@
                 templateUrl: '/App/groupsPage.html',
                 controller: 'GroupController'
             }).
+            when('/teams/:id/details', {
+                templateUrl: '/App/detailsPage.html',
+                controller: 'DetailController'
+            }).
             when('/teams/:id/players/newplayer', {
                 templateUrl: '/App/newPlayerPage.html',
                 controller: 'CreatePlayerController'
@@ -150,14 +154,6 @@
 
         $scope.team = appData.countryById($routeParams.id);
 
-        $scope.tab = 1;
-        $scope.selectedTab = function (newTab) {
-            $scope.tab = newTab;
-        };
-        $scope.selected = function (checkedTab) {
-            return $scope.tab === checkedTab;
-        };
-
         $scope.linkToPlayer = function () {
             $location.path('/teams/'+ $routeParams.id + '/players')
         };
@@ -171,6 +167,8 @@
     app.controller('PlayerController', ['$scope', '$location', '$routeParams', 'appData', function ($scope, $location, $routeParams, appData) {
 
         $scope.players = appData.countryById($routeParams.id).players;
+
+        $scope.id = $routeParams.id;
 
         $scope.order = 'num';
         $scope.reverse = false;
@@ -191,7 +189,7 @@
     app.controller('GroupController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
         $scope.team = appData.countryById($routeParams.id);
         $scope.countries = appData.getCountries();        
-
+        $scope.id = $routeParams.id;
         //$scope.teamsByGroup = function (aGroup) {
         //    var teamsByGroup = [];
         //    $scope.countries.forEach(function (item) {
@@ -251,6 +249,12 @@
      
     }]);
 
+    app.controller('DetailController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
+
+        $scope.team = appData.countryById($routeParams.id);
+
+    }]);
+
     app.controller('CreatePlayerController', ['$scope', '$location', '$routeParams', 'appData', function ($scope, $location, $routeParams, appData) {
                                      
         $scope.team = appData.countryById($routeParams.id);                 
@@ -283,13 +287,19 @@
         };
     }]);
 
-    app.directive('countryGroup', [function () {
+    app.directive('panelPage', [function () {
         return {
             restrict: 'E',
-            templateUrl: 'teamGroupPage.html',
+            templateUrl: 'appPanelPage.html',
+            controller: function ($scope, $routeParams) {
+                $scope.tab = 1;
+                $scope.selectedTab = function (newTab) {
+                    $scope.tab = newTab;
+                };
+           
+                $scope.id = $routeParams.id;             
+            },
         };
     }]);
-
-    
 
 })();

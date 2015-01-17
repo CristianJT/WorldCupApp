@@ -81,6 +81,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\appPanelPage.html" />
+    <Content Include="App\detailsPage.html" />
     <Content Include="App\teamsPage.html" />
     <Content Include="App\app.js" />
     <Content Include="App\index.html" />
