@@ -136,9 +136,9 @@
 
     app.controller('WorldCupController', ['$scope', 'appData', function ($scope, appData) {
 
-        $scope.countries = appData.getCountries().sort(order);
+        $scope.countries = appData.getCountries().sort(order);                  //obtener todas las selecciones, ordenados por seed
 
-        $scope.getGroups = function () {                            //permite obtener todos los grupos
+        $scope.getGroups = function () {                                        //obtener los grupos de las selecciones
             var grupos = [];
             angular.forEach($scope.countries, function (item) {
                 if (grupos.indexOf(item.group) == -1) {
@@ -146,24 +146,24 @@
                 }
             });
             return grupos.sort();
-        }
+        }                                     
 
     }]);
 
     app.controller('TeamController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
 
-        $scope.team = appData.countryById($routeParams.id);
+        $scope.team = appData.countryById($routeParams.id);                     //obtener una selección por id
 
     }]);
 
     app.controller('PlayerController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
 
-        $scope.players = appData.countryById($routeParams.id).players;
+        $scope.players = appData.countryById($routeParams.id).players;         //obtener jugadores de una selección de id
 
-        $scope.order = 'num';
-        $scope.reverse = false;
+        $scope.order = 'num';                                                  //método de ordenamiento, por número por defecto
+        $scope.reverse = false;                                                //permite intercambio en el ordenamiento
 
-        $scope.deletePlayer = function (aNumber) {
+        $scope.deletePlayer = function (aNumber) {                             //eliminar un jugador de una selección de id (solo en el cliente)
             for (i = 0; i < $scope.players.length; i++) {
                 if ($scope.players[i].num == aNumber) {
                     $scope.players.splice(i, 1);
@@ -175,11 +175,11 @@
 
     app.controller('GroupController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
 
-        $scope.team = appData.countryById($routeParams.id);
-        $scope.countries = appData.getCountries();        
+        $scope.team = appData.countryById($routeParams.id);                     //obtener una selección de id
+        $scope.countries = appData.getCountries();                              //obtener todas las selecciones
 
-        $scope.matches = appData.getMatches();
-        $scope.getMatches = function (aTeam) {
+        $scope.matches = appData.getMatches();                                  //obtener todos los partidos
+        $scope.getMatches = function (aTeam) {                                  //obtener todos los partidos de una selección de id
             return appData.getMatchesByTeam(aTeam);
         };
 
@@ -190,9 +190,9 @@
             team.pp = 0;
             team.gf = 0;
             team.gc = 0;
-        };
+        };                                             //permite resetear la tabla de posiciones del grupo
 
-        $scope.updateTable = function (aMatch) {
+        $scope.updateTable = function (aMatch) {                                //actualiza la tabla de posiciones, según el resultado
             game = appData.getMatchById(aMatch);
             t1 = appData.countryByName(game.team1);
             t2 = appData.countryByName(game.team2);
@@ -223,22 +223,22 @@
 
         }
 
-        $scope.showMatches = false;
+        $scope.showMatches = false;                                             //mostrar u ocultar los partidos de una selección
      
     }]);
 
     app.controller('DetailController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
 
-        $scope.team = appData.countryById($routeParams.id);
+        $scope.team = appData.countryById($routeParams.id);                     //obtener una selección de id
 
     }]);
 
     app.controller('CreatePlayerController', ['$scope', '$location', '$routeParams', 'appData', function ($scope, $location, $routeParams, appData) {
                                      
-        $scope.team = appData.countryById($routeParams.id);                 
+        $scope.team = appData.countryById($routeParams.id);                     //obtener una selección de id
 
-        $scope.getNums = function () {                                             
-            var numeros = [];
+        $scope.getNums = function () {                                          //números de jugadores del 1 al 23, sacándo los ya    
+            var numeros = [];                                                   //utilizados por los de la misma selección            
             for (i = 1; i <= 23; i++) {
                 numeros.push(i);                                                    
             }
@@ -249,15 +249,17 @@
             });
             return numeros;
         }
-        $scope.addPlayer = function (aPlayer) {                                     
+
+        $scope.addPlayer = function (aPlayer) {                                 //agregar un nuevo jugador a la selección de id      
             $scope.team.players.push(aPlayer);
             $scope.backToPlayers();
         };
 
-        $scope.backToPlayers = function () {
+        $scope.backToPlayers = function () {                                    //volver a la página jugadores
             $location.path('/teams/' + $routeParams.id + '/players');
         };
-        $scope.reset = function () {                                               
+
+        $scope.reset = function () {                                            //resetear el formulario de carga de jugadores                                           
             $scope.player = {};
         };
     }]);
@@ -267,11 +269,11 @@
             restrict: 'E',
             templateUrl: 'appPanelPage.html',
             controller: function ($scope, $routeParams) {
-                $scope.tab = 1;
-                $scope.selectedTab = function (newTab) {
+                $scope.tab = 1;                                             //por defecto muestra la página de detalles
+                $scope.selectedTab = function (newTab) {                    //permite cambiar de página
                     $scope.tab = newTab;
                 };
-                $scope.id = $routeParams.id;                      
+                $scope.id = $routeParams.id;                                //sin el id, no se podría navegar entre páginas
             },
         };
     }]);
@@ -281,10 +283,10 @@
             restrict: 'E',
             templateUrl: 'appNavPage.html',
             controller: function ($scope, $routeParams, $location) {
-                $scope.backToTeams = function () {
+                $scope.backToTeams = function () {                                          //volver a la página con los grupos
                     $location.path('/teams');
                 };
-                $scope.linkToCreatePlayer = function () {
+                $scope.linkToCreatePlayer = function () {                                   //permite ir a la página de crear jugador
                     $location.path('/teams/' + $routeParams.id + '/players/newplayer');
                 };
             },
