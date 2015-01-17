@@ -2,6 +2,13 @@
 
     var app = angular.module('WorldCup', ['ngRoute']);
 
+    function order(a, b) {                                          //Permite ordenar el array por el atributo seed
+        if (a.seed < b.seed)
+            return -1;
+        if (a.seed > b.seed)
+            return 1;
+    }
+
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider.
             when('/teams', {
@@ -129,13 +136,6 @@
 
     app.controller('WorldCupController', ['$scope', 'appData', function ($scope, appData) {
 
-        function order(a, b) {                                          //Permite ordenar el array por el atributo seed
-            if (a.seed < b.seed)
-                return -1;
-            if (a.seed > b.seed)
-                return 1;
-        }
-
         $scope.countries = appData.getCountries().sort(order);
 
         $scope.getGroups = function () {                            //permite obtener todos los grupos
@@ -150,25 +150,15 @@
 
     }]);
 
-    app.controller('TeamController', ['$scope', '$routeParams', '$location', 'appData', function ($scope, $routeParams, $location, appData) {
+    app.controller('TeamController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
 
         $scope.team = appData.countryById($routeParams.id);
 
-        $scope.linkToPlayer = function () {
-            $location.path('/teams/'+ $routeParams.id + '/players')
-        };
-
-        $scope.backToTeams = function () {
-            $location.path('/teams');
-        };
-
     }]);
 
-    app.controller('PlayerController', ['$scope', '$location', '$routeParams', 'appData', function ($scope, $location, $routeParams, appData) {
+    app.controller('PlayerController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
 
         $scope.players = appData.countryById($routeParams.id).players;
-
-        $scope.id = $routeParams.id;
 
         $scope.order = 'num';
         $scope.reverse = false;
@@ -181,24 +171,12 @@
             }
         };
 
-        $scope.linkToCreatePlayer = function () {
-            $location.path('/teams/' + $routeParams.id + '/players/newplayer');
-        };
     }]);
 
     app.controller('GroupController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
+
         $scope.team = appData.countryById($routeParams.id);
         $scope.countries = appData.getCountries();        
-        $scope.id = $routeParams.id;
-        //$scope.teamsByGroup = function (aGroup) {
-        //    var teamsByGroup = [];
-        //    $scope.countries.forEach(function (item) {
-        //        if (item.group == aGroup) {
-        //            teamsByGroup.push(item);
-        //        }
-        //    });
-        //    return teamsByGroup.sort(order);
-        //};
 
         $scope.matches = appData.getMatches();
         $scope.getMatches = function (aTeam) {
@@ -276,11 +254,8 @@
             $scope.backToPlayers();
         };
 
-        $scope.backToPlayers = function () {                                  
+        $scope.backToPlayers = function () {
             $location.path('/teams/' + $routeParams.id + '/players');
-        };
-        $scope.backToTeams = function () {                                          
-            $location.path('/teams');
         };
         $scope.reset = function () {                                               
             $scope.player = {};
@@ -296,8 +271,22 @@
                 $scope.selectedTab = function (newTab) {
                     $scope.tab = newTab;
                 };
-           
-                $scope.id = $routeParams.id;             
+                $scope.id = $routeParams.id;                      
+            },
+        };
+    }]);
+
+    app.directive('navigationPage', [function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'appNavPage.html',
+            controller: function ($scope, $routeParams, $location) {
+                $scope.backToTeams = function () {
+                    $location.path('/teams');
+                };
+                $scope.linkToCreatePlayer = function () {
+                    $location.path('/teams/' + $routeParams.id + '/players/newplayer');
+                };
             },
         };
     }]);

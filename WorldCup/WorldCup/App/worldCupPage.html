@@ -5,7 +5,7 @@
         </div>
         <div class="panel-body" ng-repeat="team in countries | orderBy: order | filter: {group: g}" >
             <div class="list-group-item">
-                <a href="#/teams/{{team.id}}"><h4 class="text-center">{{team.name}}</h4></a>
+                <a href="#/teams/{{team.id}}"><h4 class="text-center">{{team.name}}-{{team.seed}}</h4></a>
             </div>
         </div>
     </div>
