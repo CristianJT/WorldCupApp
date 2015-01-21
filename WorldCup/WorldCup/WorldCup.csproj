@@ -84,6 +84,7 @@
     <Content Include="App\appNavPage.html" />
     <Content Include="App\appPanelPage.html" />
     <Content Include="App\detailsPage.html" />
+    <Content Include="App\teamNamePage.html" />
     <Content Include="App\teamsPage.html" />
     <Content Include="App\app.js" />
     <Content Include="App\index.html" />
@@ -93,6 +94,7 @@
     <Content Include="App\worldCupPage.html" />
     <Content Include="CSS\bootstrap.css" />
     <Content Include="CSS\bootstrap.min.css" />
+    <Content Include="CSS\Custom.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />

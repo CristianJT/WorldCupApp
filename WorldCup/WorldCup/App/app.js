@@ -43,16 +43,16 @@
     app.factory('appData', function () {
 
         var matches = [
-            { matchNum: 1, group: 'f', team1: 'Argentina', team2: 'Bosnia-Herzegovina', result1: null, result2: null },
-            { matchNum: 2, group: 'f', team1: 'Iran', team2: 'Nigeria', result1: null, result2: null },
-            { matchNum: 3, group: 'f', team1: 'Argentina', team2: 'Iran', result1: null, result2: null },
-            { matchNum: 4, group: 'f', team1: 'Nigeria', team2: 'Bosnia-Herzegovina', result1: null, result2: null },
-            { matchNum: 5, group: 'b', team1: 'España', team2: 'Holanda', result1: null, result2: null }
+            { matchNum: 1, date:'FECHA', time: 'HORA', stadium:'ESTADIO', group: 'f', team1: 'Argentina', team2: 'Bosnia-Herzegovina', result1: 0, result2: 0 },
+            { matchNum: 2, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Iran', team2: 'Nigeria', result1: 0, result2: 0 },
+            { matchNum: 3, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Argentina', team2: 'Iran', result1: 0, result2: 0 },
+            { matchNum: 4, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Nigeria', team2: 'Bosnia-Herzegovina', result1: 0, result2: 0 },
+            { matchNum: 5, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'b', team1: 'España', team2: 'Holanda', result1: 0, result2: 0 }
         ];
 
         var countries = [
                      {
-                         id: 1, name: 'Argentina', seed: 1, group: 'f', cups: 2, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, 
+                         id: 1, name: 'Argentina', seed: 1, group: 'f', cups: 2, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, description: 'DESCRIPCIÓN SOBRE LA SELECCIÓN', 
                          players: [{ num: 10, name: 'Lionel Messi', position: 'DEL' },
                                    { num: 9, name: 'Gonzalo Higuain', position: 'DEL' },
                                    { num: 4, name: 'Pablo Zabaleta', position: 'DEF' }]
@@ -158,6 +158,8 @@
 
     app.controller('PlayerController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
 
+        $scope.team = appData.countryById($routeParams.id);                    //obtener una selección de id
+
         $scope.players = appData.countryById($routeParams.id).players;         //obtener jugadores de una selección de id
 
         $scope.order = 'num';                                                  //método de ordenamiento, por número por defecto
@@ -192,6 +194,14 @@
             team.gc = 0;
         };                                             //permite resetear la tabla de posiciones del grupo
 
+        valid = function (result) {
+            result = parseInt(result);
+            if (!isNaN(result)) {
+                return result;
+            }
+ 
+        };
+
         $scope.updateTable = function (aMatch) {                                //actualiza la tabla de posiciones, según el resultado
             game = appData.getMatchById(aMatch);
             t1 = appData.countryByName(game.team1);
@@ -199,8 +209,9 @@
             
             reset(t1);
             reset(t2);
-
-            if (game.result1 > game.result2) {
+   
+            if (valid(game.result1) && valid(game.result2)) {
+                if (game.result1 > game.result2) {
                     t1.pg = t1.pg + 1;
                     t2.pp = t2.pp + 1;
                 }
@@ -212,15 +223,15 @@
                     t2.pe = t2.pe + 1;
                 }
 
-            t1.gf = t1.gf + game.result1;
-            t1.gc = t1.gc + game.result2;
+                t1.gf = t1.gf + game.result1;
+                t1.gc = t1.gc + game.result2;
 
-            t2.gf = t2.gf + game.result2;
-            t2.gc = t2.gc + game.result1;
-                
-            t1.pj = t1.pj + 1;
-            t2.pj = t2.pj + 1;
+                t2.gf = t2.gf + game.result2;
+                t2.gc = t2.gc + game.result1;
 
+                t1.pj = t1.pj + 1;
+                t2.pj = t2.pj + 1;
+            }
         }
 
         $scope.showMatches = false;                                             //mostrar u ocultar los partidos de una selección
@@ -291,6 +302,13 @@
                 };
             },
         };
+    }]);
+
+    app.directive('teamName', [function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'teamNamePage.html',
+        }
     }]);
 
 })();

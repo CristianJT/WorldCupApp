@@ -1,53 +1,68 @@
-﻿<div><panel-page></panel-page></div>
+﻿<div><team-name></team-name></div>
 
-<div class="panel-body">
-    <h2 class="text-center"><strong>Grupo {{team.group | uppercase}}</strong></h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Equipos</th>
-                <th>PJ</th>
-                <th>Pts</th>
-                <th>G</th>
-                <th>E</th>
-                <th>P</th>
-                <th>GF</th>
-                <th>GC</th>
-                <th>Dif</th>
-            </tr>
-        </thead>
-        <tbody ng-repeat="team in countries | filter: {group:team.group}">
-            <tr class="text-center">
-                <td class="text-left">{{team.name | uppercase}}</td>
-                <td>{{team.pj}}</td>
-                <td>{{team.pg * 3 + team.pe}}</td>
-                <td>{{team.pg}}</td>
-                <td>{{team.pe}}</td>
-                <td>{{team.pp}}</td>
-                <td>{{team.gf}}</td>
-                <td>{{team.gc}}</td>
-                <td>{{team.gf - team.gc}}</td>
-                <th ng-click="showMatches =! showMatches"><a>Ver</a></th>
-            </tr>
-            <tr ng-show="showMatches" >
-                <td colspan="12">
-                    <div ng-repeat="match in getMatches(team.name)" class="result">
-                        {{match.team1}}  {{match.result1}} - {{match.result2}}  {{match.team2}}
-                    </div>                    
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table>
-        <tbody>
-            <tr ng-repeat="game in matches | filter: {group: team.group}">
-                <td>{{game.team1}}</td>
-                <td><input type="number" ng-change="updateTable(game.matchNum)" ng-model="game.result1"/></td>
-                <td><input type="number" ng-change="updateTable(game.matchNum)" ng-model="game.result2"/></td>
-                <td>{{game.team2}}</td>
-            </tr>
-        </tbody>
-    </table>
+<div><panel-page></panel-page></div>
+<div class="">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="text-center"><strong>Grupo {{team.group | uppercase}}</strong></h3>
+        </div>
+        <div class="panel-body">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Equipos</th>
+                        <th>PJ</th>
+                        <th>Pts</th>
+                        <th>G</th>
+                        <th>E</th>
+                        <th>P</th>
+                        <th>GF</th>
+                        <th>GC</th>
+                        <th>Dif</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="team in countries | filter: {group:team.group}">
+                    <tr>
+                        <td>{{team.name | uppercase}}</td>
+                        <td>{{team.pj}}</td>
+                        <td>{{team.pg * 3 + team.pe}}</td>
+                        <td>{{team.pg}}</td>
+                        <td>{{team.pe}}</td>
+                        <td>{{team.pp}}</td>
+                        <td>{{team.gf}}</td>
+                        <td>{{team.gc}}</td>
+                        <td>{{team.gf - team.gc}}</td>
+                        <th ng-click="showMatches =! showMatches"><a>Ver</a></th>
+                    </tr>
+                    <tr ng-show="showMatches">
+                        <td colspan="1">
+                            <div ng-repeat="match in getMatches(team.name)">{{match.team1}} {{match.result1}} - {{match.result2}} {{match.team2}}</div>   
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+      
+            <div class="panel-heading"><h4 class="text-center">Lo que viene...</h4></div>
+            <div class="panel-body">
+                <table class="table">
+                    <tbody>
+                        <tr ng-repeat="game in matches | filter: {group: team.group}">
+                            <td>{{game.stadium}}</td>
+                            <td>{{game.date}}</td>
+                            <td>{{game.time}}</td>
+                            <td>{{game.team1}}</td>
+                            <td class="col-sm-1"><input ng-change="updateTable(game.matchNum)" ng-model="game.result1" /></td>
+                            <td class="col-sm-1"><input ng-change="updateTable(game.matchNum)" ng-model="game.result2" /></td>
+                            <td>{{game.team2}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>   
+           
+        </div>
+
+    </div>
+
+    <div><navigation-page></navigation-page></div>
 </div>
-
-<div><navigation-page></navigation-page></div>
