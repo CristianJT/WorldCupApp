@@ -52,8 +52,8 @@
                             <td>{{game.date}}</td>
                             <td>{{game.time}}</td>
                             <td>{{game.team1}}</td>
-                            <td class="col-sm-1"><input ng-change="updateTable(game.matchNum)" ng-model="game.result1" /></td>
-                            <td class="col-sm-1"><input ng-change="updateTable(game.matchNum)" ng-model="game.result2" /></td>
+                            <td class="col-sm-1"><input type="number" ng-change="updateTable(game.matchNum)" ng-model="game.result1" /></td>
+                            <td class="col-sm-1"><input type="number" ng-change="updateTable(game.matchNum)" ng-model="game.result2" /></td>
                             <td>{{game.team2}}</td>
                         </tr>
                     </tbody>

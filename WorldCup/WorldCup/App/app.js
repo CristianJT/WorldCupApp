@@ -43,16 +43,16 @@
     app.factory('appData', function () {
 
         var matches = [
-            { matchNum: 1, date:'FECHA', time: 'HORA', stadium:'ESTADIO', group: 'f', team1: 'Argentina', team2: 'Bosnia-Herzegovina', result1: 0, result2: 0 },
-            { matchNum: 2, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Iran', team2: 'Nigeria', result1: 0, result2: 0 },
-            { matchNum: 3, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Argentina', team2: 'Iran', result1: 0, result2: 0 },
-            { matchNum: 4, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Nigeria', team2: 'Bosnia-Herzegovina', result1: 0, result2: 0 },
-            { matchNum: 5, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'b', team1: 'España', team2: 'Holanda', result1: 0, result2: 0 }
+            { matchNum: 1, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Argentina', team2: 'Bosnia-Herzegovina', result1: null, result2: null },
+            { matchNum: 2, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Iran', team2: 'Nigeria', result1: null, result2: null },
+            { matchNum: 3, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Argentina', team2: 'Iran', result1: null, result2: null },
+            { matchNum: 4, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'f', team1: 'Nigeria', team2: 'Bosnia-Herzegovina', result1: null, result2: null },
+            { matchNum: 5, date: 'FECHA', time: 'HORA', stadium: 'ESTADIO', group: 'b', team1: 'España', team2: 'Holanda', result1: null, result2: null }
         ];
 
         var countries = [
                      {
-                         id: 1, name: 'Argentina', seed: 1, group: 'f', cups: 2, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, description: 'DESCRIPCIÓN SOBRE LA SELECCIÓN', 
+                         id: 1, name: 'Argentina', seed: 1, group: 'f', cups: 2, pts: 0, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, description: 'DESCRIPCIÓN SOBRE LA SELECCIÓN', 
                          players: [{ num: 10, name: 'Lionel Messi', position: 'DEL' },
                                    { num: 9, name: 'Gonzalo Higuain', position: 'DEL' },
                                    { num: 4, name: 'Pablo Zabaleta', position: 'DEF' }]
@@ -84,10 +84,10 @@
                      { id: 22, name: 'Francia', seed: 3, group: 'e', cups: 1, players: [] },
                      { id: 23, name: 'Suiza', seed: 1, group: 'e', cups: 0, players: [] },
                      { id: 24, name: 'Ecuador', seed: 2, group: 'e', cups: 0, players: [] },
-                     { id: 25, name: 'Nigeria', seed: 4, group: 'f', cups: 0, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, players: [] },
+                     { id: 25, name: 'Nigeria', seed: 4, group: 'f', cups: 0, pts: 0, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, players: [] },
                      { id: 26, name: 'Honduras', seed: 4, group: 'e', cups: 0, players: [] },
-                     { id: 27, name: 'Bosnia-Herzegovina', seed: 2, group: 'f', cups: 0, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, players: [] },
-                     { id: 28, name: 'Iran', seed: 3, group: 'f', cups: 0, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, players: [] },
+                     { id: 27, name: 'Bosnia-Herzegovina', seed: 2, group: 'f', cups: 0, pts: 0, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, players: [] },
+                     { id: 28, name: 'Iran', seed: 3, group: 'f', cups: 0, pts: 0, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, players: [] },
                      { id: 29, name: 'Portugal', seed: 2, group: 'g', cups: 0, players: [] },
                      { id: 30, name: 'USA', seed: 4, group: 'g', cups: 0, players: [] },
                      { id: 31, name: 'Ghana', seed: 3, group: 'g', cups: 0, players: [] },
@@ -178,7 +178,7 @@
     app.controller('GroupController', ['$scope', '$routeParams', 'appData', function ($scope, $routeParams, appData) {
 
         $scope.team = appData.countryById($routeParams.id);                     //obtener una selección de id
-        $scope.countries = appData.getCountries();                              //obtener todas las selecciones
+        $scope.countries = appData.getCountries().sort(order);                              //obtener todas las selecciones
 
         $scope.matches = appData.getMatches();                                  //obtener todos los partidos
         $scope.getMatches = function (aTeam) {                                  //obtener todos los partidos de una selección de id
@@ -195,20 +195,18 @@
         };                                             //permite resetear la tabla de posiciones del grupo
 
         valid = function (result) {
-            result = parseInt(result);
-            if (!isNaN(result)) {
+
+            if (result >= 0 || result == null) 
                 return result;
-            }
- 
+            else {
+                alert("Número inválido");
+                }
         };
 
         $scope.updateTable = function (aMatch) {                                //actualiza la tabla de posiciones, según el resultado
             game = appData.getMatchById(aMatch);
             t1 = appData.countryByName(game.team1);
             t2 = appData.countryByName(game.team2);
-            
-            reset(t1);
-            reset(t2);
    
             if (valid(game.result1) && valid(game.result2)) {
                 if (game.result1 > game.result2) {
@@ -231,6 +229,11 @@
 
                 t1.pj = t1.pj + 1;
                 t2.pj = t2.pj + 1;
+
+            }
+            else {
+                reset(t1);
+                reset(t2);
             }
         }
 
