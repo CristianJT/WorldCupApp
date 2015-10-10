@@ -11,9 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   intro
-   general
-   tutorial
+   intro <strings>
+   general <strings>
+   tutorial <strings>
 
 Indices and tables
 ==================
