@@ -37,7 +37,7 @@ namespace WorldCup.Controllers
         public async Task<IHttpActionResult> GetPlayer(int id)
         {
             PlayerDTO player = await db.Players
-                .Where(p => p.CountryId == id)
+                .Where(p => p.PlayerId == id)
                 .Select(AsPlayerDto)
                 .FirstOrDefaultAsync();
             if (player == null)
