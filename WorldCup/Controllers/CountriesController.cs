@@ -13,6 +13,11 @@ using WorldCup.Models;
 
 namespace WorldCup.Controllers
 {
+
+   /// <summary>
+   /// Algo de documentacion
+   /// </summary>
+
     [RoutePrefix("api/countries")]
     public class CountriesController : ApiController
     {    
