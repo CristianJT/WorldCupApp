@@ -11,7 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-
+   intro
+   general
+   tutorial
 
 Indices and tables
 ==================
@@ -20,4 +22,3 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-Prueba de futbol
